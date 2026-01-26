@@ -1,0 +1,389 @@
+Enter password: *************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use KNP24AD035
+Database changed
+mysql> use KNP24AD035;
+Database changed
+mysql> use employ;
+Database changed
+mysql> desc emp1;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empid    | varchar(40) | NO   | PRI | NULL    |       |
+| empname  | varchar(40) | YES  |     | NULL    |       |
+| streetno | int         | YES  |     | NULL    |       |
+| city     | varchar(30) | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> desc company;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| companyname | varchar(40) | NO   | PRI | NULL    |       |
+| city        | varchar(30) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+mysql> CREATE TABLE work (
+    ->     empid VARCHAR(40),
+    ->     companyname VARCHAR(40),
+    ->     salary FLOAT,
+    ->     FOREIGN KEY (empid) REFERENCES emp1(empid),
+    ->     FOREIGN KEY (companyname) REFERENCES company(companyname)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc work;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| empid       | varchar(40) | YES  | MUL | NULL    |       |
+| companyname | varchar(40) | YES  | MUL | NULL    |       |
+| salary      | float       | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> CREATE TABLE manager (
+    ->     empid VARCHAR(20) REFERENCES emp1(empid),
+    ->     managerid VARCHAR(20) REFERENCES emp1(empid),
+    ->     UNIQUE (empid, managerid)
+    -> );
+Query OK, 0 rows affected (0.22 sec)
+
+mysql> desc manager;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empid     | varchar(20) | YES  | MUL | NULL    |       |
+| managerid | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.09 sec)
+
+mysql> insert into emp1 values('E-101','Adarsh','101','MG road');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into emp1 values('E-102','Bonny','101','MG road');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into emp1 values('E-103','Catherine','102','Cochin');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values('E-104','Glenn','104','Ernakulam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values('E-105','George','201','MG road');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into emp1 values('E-106','Hayes','101','MG road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values('E-107','Jhonson','102','Cochin');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values('E-108','Jones','101','Cochin');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into emp1 values('E-109','Karthik','101','Cochin');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> delete from emp1
+    -> where empid='109';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from emp1;
++-------+-----------+----------+-----------+
+| empid | empname   | streetno | city      |
++-------+-----------+----------+-----------+
+| E-101 | Adarsh    |      101 | MG road   |
+| E-102 | Bonny     |      101 | MG road   |
+| E-103 | Catherine |      102 | Cochin    |
+| E-104 | Glenn     |      104 | Ernakulam |
+| E-105 | George    |      201 | MG road   |
+| E-106 | Hayes     |      101 | MG road   |
+| E-107 | Jhonson   |      102 | Cochin    |
+| E-108 | Jones     |      101 | Cochin    |
+| E-109 | Karthik   |      101 | Cochin    |
++-------+-----------+----------+-----------+
+9 rows in set (0.01 sec)
+
+mysql> delete from emp1
+    -> where empid='E-109';
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select*from emp1;
++-------+-----------+----------+-----------+
+| empid | empname   | streetno | city      |
++-------+-----------+----------+-----------+
+| E-101 | Adarsh    |      101 | MG road   |
+| E-102 | Bonny     |      101 | MG road   |
+| E-103 | Catherine |      102 | Cochin    |
+| E-104 | Glenn     |      104 | Ernakulam |
+| E-105 | George    |      201 | MG road   |
+| E-106 | Hayes     |      101 | MG road   |
+| E-107 | Jhonson   |      102 | Cochin    |
+| E-108 | Jones     |      101 | Cochin    |
++-------+-----------+----------+-----------+
+8 rows in set (0.00 sec)
+
+mysql> insert into emp1 values('E-109','Karthik','101','Ernakulam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from emp1;
++-------+-----------+----------+-----------+
+| empid | empname   | streetno | city      |
++-------+-----------+----------+-----------+
+| E-101 | Adarsh    |      101 | MG road   |
+| E-102 | Bonny     |      101 | MG road   |
+| E-103 | Catherine |      102 | Cochin    |
+| E-104 | Glenn     |      104 | Ernakulam |
+| E-105 | George    |      201 | MG road   |
+| E-106 | Hayes     |      101 | MG road   |
+| E-107 | Jhonson   |      102 | Cochin    |
+| E-108 | Jones     |      101 | Cochin    |
+| E-109 | Karthik   |      101 | Ernakulam |
++-------+-----------+----------+-----------+
+9 rows in set (0.00 sec)
+
+mysql> insert into emp1 values('E-110','Lavanya','101','Palace road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into emp1 values('E-111','Niharika','102','Ernakulam');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select*from emp1;
++-------+-----------+----------+-------------+
+| empid | empname   | streetno | city        |
++-------+-----------+----------+-------------+
+| E-101 | Adarsh    |      101 | MG road     |
+| E-102 | Bonny     |      101 | MG road     |
+| E-103 | Catherine |      102 | Cochin      |
+| E-104 | Glenn     |      104 | Ernakulam   |
+| E-105 | George    |      201 | MG road     |
+| E-106 | Hayes     |      101 | MG road     |
+| E-107 | Jhonson   |      102 | Cochin      |
+| E-108 | Jones     |      101 | Cochin      |
+| E-109 | Karthik   |      101 | Ernakulam   |
+| E-110 | Lavanya   |      101 | Palace road |
+| E-111 | Niharika  |      102 | Ernakulam   |
++-------+-----------+----------+-------------+
+11 rows in set (0.00 sec)
+
+mysql> insert into company values('Axis','cochin');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into company values('City Bank','Ernakulam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into company values('Federal','Broadway');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into company values('HDFC','Palace road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into company values('Indian Bank','Cochin');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into company values('SBI','MG road');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into company values('SBT','MG road');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> insert into company values('SIB','Ernakulam');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from company;
++-------------+-------------+
+| companyname | city        |
++-------------+-------------+
+| Axis        | cochin      |
+| City Bank   | Ernakulam   |
+| Federal     | Broadway    |
+| HDFC        | Palace road |
+| Indian Bank | Cochin      |
+| SBI         | MG road     |
+| SBT         | MG road     |
+| SIB         | Ernakulam   |
++-------------+-------------+
+8 rows in set (0.00 sec)
+
+mysql> insert into work values('E-101','SBI','71000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into work values('E-102','SBI','90000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-103','SBT','40000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into work values('E-104','Federal','37000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into work values('E-105','SBT','17000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-106','Indian Bank','30000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into work values('E-107','SIB','21000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-108','SIB','18000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into work values('E-109','Indian Bank','28000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-110','SBT','25000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-111','Federal','40000');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select*from work;
++-------+-------------+--------+
+| empid | companyname | salary |
++-------+-------------+--------+
+| E-101 | SBI         |  71000 |
+| E-102 | SBI         |  90000 |
+| E-103 | SBT         |  40000 |
+| E-104 | Federal     |  37000 |
+| E-105 | SBT         |  17000 |
+| E-106 | Indian Bank |  30000 |
+| E-107 | SIB         |  21000 |
+| E-108 | SIB         |  18000 |
+| E-109 | Indian Bank |  28000 |
+| E-110 | SBT         |  25000 |
+| E-111 | Federal     |  40000 |
++-------+-------------+--------+
+11 rows in set (0.00 sec)
+
+mysql> delete from work where empid='E-110';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from work;
++-------+-------------+--------+
+| empid | companyname | salary |
++-------+-------------+--------+
+| E-101 | SBI         |  71000 |
+| E-102 | SBI         |  90000 |
+| E-103 | SBT         |  40000 |
+| E-104 | Federal     |  37000 |
+| E-105 | SBT         |  17000 |
+| E-106 | Indian Bank |  30000 |
+| E-107 | SIB         |  21000 |
+| E-108 | SIB         |  18000 |
+| E-109 | Indian Bank |  28000 |
+| E-111 | Federal     |  40000 |
++-------+-------------+--------+
+10 rows in set (0.00 sec)
+
+mysql> insert into work values('E-110','SBT','250000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from work;
++-------+-------------+--------+
+| empid | companyname | salary |
++-------+-------------+--------+
+| E-101 | SBI         |  71000 |
+| E-102 | SBI         |  90000 |
+| E-103 | SBT         |  40000 |
+| E-104 | Federal     |  37000 |
+| E-105 | SBT         |  17000 |
+| E-106 | Indian Bank |  30000 |
+| E-107 | SIB         |  21000 |
+| E-108 | SIB         |  18000 |
+| E-109 | Indian Bank |  28000 |
+| E-111 | Federal     |  40000 |
+| E-110 | SBT         | 250000 |
++-------+-------------+--------+
+11 rows in set (0.00 sec)
+
+mysql> delete from work where empid='E-111';
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into work values('E-111','Federal','40000');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from work;
++-------+-------------+--------+
+| empid | companyname | salary |
++-------+-------------+--------+
+| E-101 | SBI         |  71000 |
+| E-102 | SBI         |  90000 |
+| E-103 | SBT         |  40000 |
+| E-104 | Federal     |  37000 |
+| E-105 | SBT         |  17000 |
+| E-106 | Indian Bank |  30000 |
+| E-107 | SIB         |  21000 |
+| E-108 | SIB         |  18000 |
+| E-109 | Indian Bank |  28000 |
+| E-110 | SBT         | 250000 |
+| E-111 | Federal     |  40000 |
++-------+-------------+--------+
+11 rows in set (0.00 sec)
+
+mysql> insert into manager
+    -> ^C
+mysql> insert into manager values('E-101','E-102');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-102','NULL');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-103','E-110');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into manager values('E-104','E-111');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-105','E-110');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into manager values('E-106','E-109');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-107','NULL');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-108','NULL');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-109','NULL');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-110','NULL');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into manager values('E-111','NULL');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from manager;
++-------+-----------+
+| empid | managerid |
++-------+-----------+
+| E-101 | E-102     |
+| E-102 | NULL      |
+| E-103 | E-110     |
+| E-104 | E-111     |
+| E-105 | E-110     |
+| E-106 | E-109     |
+| E-107 | NULL      |
+| E-108 | NULL      |
+| E-109 | NULL      |
+| E-110 | NULL      |
+| E-111 | NULL      |
++-------+-----------+
+11 rows in set (0.00 sec)
