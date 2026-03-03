@@ -1,0 +1,440 @@
+PS C:\Users\SLIM> mysql -u root -p
+Enter password: *************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.44 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2025, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use KNP24AD035;
+Database changed
+mysql> use employ;
+Database changed
+
+mysql> create table faculty(fcode varchar(10) primary key,fname varchar(20));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc faculty;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| fcode | varchar(10) | NO   | PRI | NULL    |       |
+| fname | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> create table subject(subcode varchar(10) primary key,subname varchar(20),maxmark int(10),fcode varchar(10) references faculty(fcode));
+Query OK, 0 rows affected, 1 warning (0.04 sec)
+
+mysql> desc subject;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| subcode | varchar(10) | NO   | PRI | NULL    |       |
+| subname | varchar(20) | YES  |     | NULL    |       |
+| maxmark | int         | YES  |     | NULL    |       |
+| fcode   | varchar(10) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> create table student(studentcode int(10) primary key,studentname varchar(20),DOB date,studentbranch varchar(20) check(studentbranch in ('cs','ec','eee','me')),admdate date);
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> desc student;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| studentcode   | int         | NO   | PRI | NULL    |       |
+| studentname   | varchar(20) | YES  |     | NULL    |       |
+| DOB           | date        | YES  |     | NULL    |       |
+| studentbranch | varchar(20) | YES  |     | NULL    |       |
+| admdate       | date        | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+
+mysql> create table m_mark(studentcode int(10),subcode varchar(10),mark int(10),foreign key(studentcode) references student(studentcode),foreign key(subcode) references subject(subcode),primary key(studentcode,subcode));
+Query OK, 0 rows affected, 2 warnings (0.08 sec)
+
+mysql> desc m_mark;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| studentcode | int         | NO   | PRI | NULL    |       |
+| subcode     | varchar(10) | NO   | PRI | NULL    |       |
+| mark        | int         | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+#inserting values to the tables
+
+A)Faculty table
+
+mysql>  insert into faculty values('101','silgy');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into faculty values('102','bindhu');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into faculty values('103','vidhya');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into faculty values('104','sangeetha');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into faculty values('105','jayakumar');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from faculty;
++-------+-----------+
+| fcode | fname     |
++-------+-----------+
+| 101   | silgy     |
+| 102   | bindhu    |
+| 103   | vidhya    |
+| 104   | sangeetha |
+| 105   | jayakumar |
++-------+-----------+
+5 rows in set (0.00 sec)
+
+B)Student table
+
+mysql>  insert into student values(1,'amitha','1987-01-12','cs','2000-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(2,'vaidehi','1988-12-25','me','2000-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(3,'varun','1988-10-02','me','2000-06-02');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(4,'tarun','1988-09-05','ec','2000-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(5,'vani','1988-07-20','eee','2000-06-05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(6,'binu','1988-08-13','me','2000-06-10');
+Query OK, 1 row affected (0.00 sec)
+
+mysql>  insert into student values(7,'chitra','1986-11-14','me','1999-06-09');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(8,'dona','1991-12-02','cs','2000-06-02');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(9,'elana','1990-02-05','cs','2000-06-01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(10,'fahad','1988-03-20','ec','2000-06-05');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(11,'ginu','1988-04-13','ec','2000-06-10');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into student values(12,'hamna','1985-05-14','eee','1999-06-09');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from student;
++-------------+-------------+------------+---------------+------------+
+| studentcode | studentname | DOB        | studentbranch | admdate    |
++-------------+-------------+------------+---------------+------------+
+|           1 | amitha      | 1987-01-12 | cs            | 2000-06-01 |
+|           2 | vaidehi     | 1988-12-25 | me            | 2000-06-01 |
+|           3 | varun       | 1988-10-02 | me            | 2000-06-02 |
+|           4 | tarun       | 1988-09-05 | ec            | 2000-06-01 |
+|           5 | vani        | 1988-07-20 | eee           | 2000-06-05 |
+|           6 | binu        | 1988-08-13 | me            | 2000-06-10 |
+|           7 | chitra      | 1986-11-14 | me            | 1999-06-09 |
+|           8 | dona        | 1991-12-02 | cs            | 2000-06-02 |
+|           9 | elana       | 1990-02-05 | cs            | 2000-06-01 |
+|          10 | fahad       | 1988-03-20 | ec            | 2000-06-05 |
+|          11 | ginu        | 1988-04-13 | ec            | 2000-06-10 |
+|          12 | hamna       | 1985-05-14 | eee           | 1999-06-09 |
++-------------+-------------+------------+---------------+------------+
+12 rows in set (0.00 sec)
+
+c)subject table
+
+mysql> insert into subject values('501','maths',150,'101');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into subject values('502','fsa',100,'102');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into subject values('503','dbms',100,'105');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into subject values('504','os',75,'103');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into subject values('505','dc',200,'104');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into subject values('508','dbms_lab',1001,'103');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select*from subject;
++---------+----------+---------+-------+
+| subcode | subname  | maxmark | fcode |
++---------+----------+---------+-------+
+| 501     | maths    |     150 | 101   |
+| 502     | fsa      |     100 | 102   |
+| 503     | dbms     |     100 | 105   |
+| 504     | os       |      75 | 103   |
+| 505     | dc       |     200 | 104   |
+| 508     | dbms_lab |    1001 | 103   |
++---------+----------+---------+-------+
+6 rows in set (0.00 sec)
+
+D)m_mark table
+
+mysql> insert into m_mark values('1','502','70');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('1','503','50');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('1','504','80');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('1','505','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('1','508','70');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('2','501','90');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('2','502','89');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('2','503','77');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('2','504','95');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('2','505','74');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('2','508','98');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','501','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','502','43');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','503','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','50','40');
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`employee50`.`m_mark`, CONSTRAINT `m_mark_ibfk_2` FOREIGN KEY (`sub_code`) REFERENCES `subjects` (`sub_code`))
+mysql> insert into m_mark values('3','504','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','505','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('3','508','35');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT*FROM m_mark;
++-----------+----------+------+
+| stud_code | sub_code | mark |
++-----------+----------+------+
+|         1 | 501      |   40 |
+|         1 | 502      |   70 |
+|         1 | 503      |   50 |
+|         1 | 504      |   80 |
+|         1 | 505      |   40 |
+|         1 | 508      |   70 |
+|         2 | 501      |   90 |
+|         2 | 502      |   89 |
+|         2 | 503      |   77 |
+|         2 | 504      |   95 |
+|         2 | 505      |   74 |
+|         2 | 508      |   98 |
+|         3 | 501      |   40 |
+|         3 | 502      |   43 |
+|         3 | 503      |   40 |
+|         3 | 504      |   40 |
+|         3 | 505      |   40 |
+|         3 | 508      |   35 |
++-----------+----------+------+
+18 rows in set (0.00 sec)
+
+mysql> insert into m_mark values('4','501','50');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('5','501','60');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('5','502','43');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('5','504','23');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('6','501','67');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('6','502','43');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('6','503','40');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('6','504','23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('7','501','23');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('7','504','40');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('7','505','42');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('8','501','43');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into m_mark values('8','505','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('9','501','42');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('9','504','01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('9','508','35');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('10','501','50');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('10','504','01');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('10','505','74');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('11','501','60');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('11','508','90');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('12','501','40');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into m_mark values('12','503','67');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select *from m_mark;
++-----------+----------+------+
+| stud_code | sub_code | mark |
++-----------+----------+------+
+|         1 | 501      |   40 |
+|         1 | 502      |   70 |
+|         1 | 503      |   50 |
+|         1 | 504      |   80 |
+|         1 | 505      |   40 |
+|         1 | 508      |   70 |
+|         2 | 501      |   90 |
+|         2 | 502      |   89 |
+|         2 | 503      |   77 |
+|         2 | 504      |   95 |
+|         2 | 505      |   74 |
+|         2 | 508      |   98 |
+|         3 | 501      |   40 |
+|         3 | 502      |   43 |
+|         3 | 503      |   40 |
+|         3 | 504      |   40 |
+|         3 | 505      |   40 |
+|         3 | 508      |   35 |
+|         4 | 501      |   50 |
+|         5 | 501      |   60 |
+|         5 | 502      |   43 |
+|         5 | 504      |   23 |
+|         6 | 501      |   67 |
+|         6 | 502      |   43 |
+|         6 | 503      |   40 |
+|         6 | 504      |   23 |
+|         7 | 501      |   23 |
+|         7 | 504      |   40 |
+|         7 | 505      |   42 |
+|         8 | 501      |   43 |
+|         8 | 505      |   40 |
+|         9 | 501      |   42 |
+|         9 | 504      |    1 |
+|         9 | 508      |   35 |
+|        10 | 501      |   50 |
+|        10 | 504      |    1 |
+|        10 | 505      |   74 |
+|        11 | 501      |   60 |
+|        11 | 508      |   90 |
+|        12 | 501      |   40 |
+|        12 | 503      |   67 |
++-----------+----------+------+
+41 rows in set (0.00 sec)
+
+mysql> select count(*) faculty_count from faculty;
++---------------+
+| faculty_count |
++---------------+
+|             5 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql>  select studentname,sum(mark) as total_mark from student join m_mark on student.studentcode group by studentname;
++-------------+------------+
+| studentname | total_mark |
++-------------+------------+
+| hamna       |       1948 |
+| ginu        |       1948 |
+| fahad       |       1948 |
+| elana       |       1948 |
+| dona        |       1948 |
+| chitra      |       1948 |
+| binu        |       1948 |
+| vani        |       1948 |
+| tarun       |       1948 |
+| varun       |       1948 |
+| vaidehi     |       1948 |
+| amitha      |       1948 |
++-------------+------------+
+12 rows in set (0.01 sec)
+
+mysql>  select subname,avg(mark) as average_mark from subject join m_mark on subject.subcode=m_mark.subcode group by subname;
++----------+--------------+
+| subname  | average_mark |
++----------+--------------+
+| maths    |      51.3636 |
+| fsa      |      57.6000 |
+| dbms     |      58.5000 |
+| os       |      37.5714 |
+| dc       |      54.0000 |
+| dbms_lab |      65.6000 |
++----------+--------------+
+6 rows in set (0.01 sec)
+
+mysql> select DISTINCT subname from subject join m_mark on subject.subcode=m_mark.subcode where mark < (0.4*maxmark);
++----------+
+| subname  |
++----------+
+| maths    |
+| os       |
+| dc       |
+| dbms_lab |
++----------+
+4 rows in set (0.00 sec)
