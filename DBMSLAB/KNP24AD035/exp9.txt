@@ -1,0 +1,37 @@
+mysql> create database new;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use new;
+Database changed
+mysql> create table employees(empid int primary key,name  varchar(30)not null,salary int);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create user 'new'@'localhost' identified by 'pass123';
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> grant select,insert,update,delete on new.* to 'new'@'localhost';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show grants for 'new'@'localhost';
++---------------------------------------------------------------------+
+| Grants for new@localhost                                             |
++---------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `new`@`localhost`                              |
+| GRANT SELECT, INSERT, UPDATE, DELETE ON `new`.* TO `new`@`localhost` |
++---------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> revoke insert,update on new.* from 'new'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show grants for 'new'@'localhost';
++-----------------------------------------------------+
+| Grants for new@localhost                             |
++-----------------------------------------------------+
+| GRANT USAGE ON *.* TO `new`@`localhost`              |
+| GRANT SELECT, DELETE ON `new`.* TO `new`@`localhost` |
++-----------------------------------------------------+
+2 rows in set (0.00 sec)
+
+mysql> exit;
+bye

@@ -1,0 +1,68 @@
+
+mysql> create table employee(name varchar(40) primary key,salary int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> desc employee;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| name   | varchar(40) | NO   | PRI | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.04 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into employee values('john',1000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> savepoint spi;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee values('jane',15000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint spi;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee values('bob',20000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select *from employee;
++------+--------+
+| name | salary |
++------+--------+
+| bob  |  20000 |
+| jane |  15000 |
+| john |   1000 |
++------+--------+
+3 rows in set (0.00 sec)
+
+mysql> rollback to spi;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select *from employee;
++------+--------+
+| name | salary |
++------+--------+
+| jane |  15000 |
+| john |   1000 |
++------+--------+
+2 rows in set (0.00 sec)
+
+mysql> insert into employee value('abhishek',25000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select *from employee;
++----------+--------+
+| name     | salary |
++----------+--------+
+| abhishek |  25000 |
+| jane     |  15000 |
+| john     |   1000 |
++----------+--------+
+3 rows in set (0.00 sec)
